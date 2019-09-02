@@ -1,8 +1,9 @@
-name: wine-quality
+name: red-wine-quality
 channels:
   - defaults
 dependencies:
   - python=3.6
   - scikit-learn=0.19.1
+  - seaborn=0.9
   - pip:
     - mlflow>=1.0

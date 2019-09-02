@@ -13,6 +13,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import ElasticNet
 from sklearn.linear_model import HuberRegressor
 
+import seaborn as sns
+sns.set(style="white")
+
 import mlflow
 import mlflow.sklearn
 
@@ -23,6 +26,10 @@ def eval_metrics(actual, pred):
     r2 = r2_score(actual, pred)
     return rmse, mae, r2
 
+def plot_residuo(actual, pred):
+    g = sns.jointplot(x=actual.values.flatten(), y=pred, kind="reg", color="m", height=7)
+    g.savefig('artifacts/img_res_0.png')
+
 def run_elastic_net(train_x, test_x, train_y, test_y, alpha, l1_ratio):
     with mlflow.start_run(run_name="Elastic_a=" + str(alpha) + "_lr=" + str(l1_ratio)):
         lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
@@ -31,6 +38,7 @@ def run_elastic_net(train_x, test_x, train_y, test_y, alpha, l1_ratio):
         predicted_qualities = lr.predict(test_x)
 
         (rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
+        plot_residuo(test_y, predicted_qualities)
 
         print("Elasticnet model (alpha=%f, l1_ratio=%f):" % (alpha, l1_ratio))
         print("  RMSE: %s" % rmse)
@@ -43,6 +51,7 @@ def run_elastic_net(train_x, test_x, train_y, test_y, alpha, l1_ratio):
         mlflow.log_metric("rmse", rmse)
         mlflow.log_metric("r2", r2)
         mlflow.log_metric("mae", mae)
+        mlflow.log_artifacts("artifacts/")
 
         mlflow.sklearn.log_model(lr, "model")
 
@@ -54,6 +63,7 @@ def run_huber_regression(train_x, test_x, train_y, test_y, alpha, epsilon, max_i
         predicted_qualities = lr.predict(test_x)
 
         (rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
+        plot_residuo(test_y, predicted_qualities)
 
         print("HuberRegressor model (alpha=%f, epsilon=%f, max_iter=%d):" % (alpha, epsilon, max_iter))
         print("  RMSE: %s" % rmse)
@@ -66,6 +76,7 @@ def run_huber_regression(train_x, test_x, train_y, test_y, alpha, epsilon, max_i
         mlflow.log_metric("rmse", rmse)
         mlflow.log_metric("r2", r2)
         mlflow.log_metric("mae", mae)
+        mlflow.log_artifacts("artifacts/")
 
         mlflow.sklearn.log_model(lr, "model")
 

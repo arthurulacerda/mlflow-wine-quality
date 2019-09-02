@@ -12,6 +12,9 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import ElasticNet
 
+import seaborn as sns
+sns.set(style="white")
+
 import mlflow
 import mlflow.sklearn
 
@@ -22,7 +25,9 @@ def eval_metrics(actual, pred):
     r2 = r2_score(actual, pred)
     return rmse, mae, r2
 
-
+def plot_residuo(actual, pred):
+    g = sns.jointplot(x=actual.values.flatten(), y=pred, kind="reg", color="m", height=7)
+    g.savefig('artifacts/img_res_0.png')
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
@@ -51,6 +56,7 @@ if __name__ == "__main__":
         predicted_qualities = lr.predict(test_x)
 
         (rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
+        plot_residuo(test_y, predicted_qualities)
 
         print("Elasticnet model (alpha=%f, l1_ratio=%f):" % (alpha, l1_ratio))
         print("  RMSE: %s" % rmse)

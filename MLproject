@@ -1,5 +1,4 @@
-name: tutorial
-
+name: red-wine-quality
 conda_env: conda.yaml
 
 entry_points:
@@ -16,3 +15,4 @@ entry_points:
       epsilon: {type: float, default: 1.35}
       max_iter: {type: int, default: 100}
     command: "python huber-train.py {alpha} {epsilon} {max_iter}"
+
