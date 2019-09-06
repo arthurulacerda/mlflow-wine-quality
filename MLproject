@@ -1,10 +1,8 @@
-name: red-wine-quality
+name: cp-wine-quality
 conda_env: conda.yaml
 
 entry_points:
   main:
-    command: "python train.py"
-  elastic:
     parameters:
       alpha: {type: float, default: 1.0}
       l1_ratio: {type: float, default: 0.1}
@@ -15,4 +13,6 @@ entry_points:
       epsilon: {type: float, default: 1.35}
       max_iter: {type: int, default: 100}
     command: "python huber-train.py {alpha} {epsilon} {max_iter}"
+  classifier:
+    command: "python clf-train.py"
 

@@ -1,4 +1,4 @@
-name: red-wine-quality
+name: cp-wine-quality
 channels:
   - defaults
 dependencies:
