@@ -2,7 +2,7 @@ name: cp-wine-quality
 channels:
   - defaults
 dependencies:
-  - python=3.6
+  - python=3.7
   - scikit-learn=0.19.1
   - seaborn=0.9
   - pip:
