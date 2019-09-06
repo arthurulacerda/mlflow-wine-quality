@@ -1,14 +1,14 @@
 mlflow ui
 
-python train.py
-
 mlflow run .
 
 mlflow run https://github.com/arthurulacerda/mlflow-wine-quality -P alpha=0.47 -P l1_ratio=0.2
 
 mlflow run -e huber . -P epsilon=1
 
-curl -X POST -H "Content-Type:application/json; format=pandas-split" --data '{"columns":["alcohol", "chlorides", "citric acid", "density", "fixed acidity", "free sulfur dioxide", "pH", "residual sugar", "sulphates", "total sulfur dioxide", "volatile acidity"],"data":[[12.8, 0.029, 0.48, 0.98, 6.2, 29, 3.33, 1.2, 0.39, 75, 0.66]]}' http://127.0.0.1:5001/invocations
+curl -X POST -H "Content-Type:application/json; format=pandas-split" --data '{"columns":["fixed acidity", "volatile acidity", "citric acid", "residual sugar", "chlorides", "free sulfur dioxide", "total sulfur dioxide", "density", "pH", "sulphates", "alcohol"],"data":[[6.0, 0.29, 0.41, 10.8, 0.048, 55.0, 149.0, 0.9937, 3.09, 0.59, 10.966667]]}' http://127.0.0.1:5001/invocations
+
+curl -X POST -H "Content-Type:application/json; format=pandas-split" --data '{"columns":["fixed acidity", "volatile acidity", "citric acid", "residual sugar", "chlorides", "free sulfur dioxide", "total sulfur dioxide", "density", "pH", "sulphates", "alcohol"],"data":[[-0.96860107,  0.16580424,  0.55633228,  0.97056386,  0.09408896,  1.03266429,  0.20843976, -0.05401888, -0.61083071,  0.85930445,  0.34699202]]}' http://127.0.0.1:5001/invocations
 
 mlflow models serve -m mlruns/0/<ID>/artifacts/model/ --port 5001
 
